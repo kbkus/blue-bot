@@ -1,0 +1,15 @@
+# Byte-compiled
+__pycache__/
+*.pyc
+
+# Distribution / packaging
+packaging/build
+packaging/dist
+packaging/METAL
+packaging/*.egg-info
+packaging/HISTORY.md
+packaging/LICENSE.txt
+packaging/README.md
+packaging/version.txt
+
+/.venv
