@@ -14,10 +14,11 @@ import tkinter
 
 from tile import Tile
 
+
 class PlayerCard:
     def __init__(self, name, x0, y0):
         self.name = name
-        self.card_width = 300
+        self.card_width = 310
         self.card_height = 200
         self.points = 0
         self.minus = []
@@ -25,6 +26,19 @@ class PlayerCard:
         self.y0 = y0
         self.x1 = self.x0 + self.card_width
         self.y1 = self.y0 + self.card_height
+
+        self.gray_1s = []
+        self.gray_2s = []
+        self.gray_3s = []
+        self.gray_4s = []
+        self.gray_5s = []
+        self.gray = [self.gray_1s, self.gray_2s, self.gray_3s, self.gray_4s, self.gray_5s]
+        self.collected_1s = []
+        self.collected_2s = []
+        self.collected_3s = []
+        self.collected_4s = []
+        self.collected_5s = []
+        self.collected = [self.collected_1s, self.collected_2s, self.collected_3s, self.collected_4s, self.collected_5s]
 
     def create_canvas_card(self, c):
         c.create_rectangle(self.x0, self.y0, self.x1, self.y1, fill='gray')
@@ -37,8 +51,10 @@ class PlayerCard:
             for j in range(0, 5):
                 t = Tile(colors[j])
                 x = self.x0 + self.card_width/2 + (t.tile_size+t.tile_space)*j
-                y = self.y0 + 5 + (t.tile_size+ t.tile_space)*i
-                c.create_rectangle(x, y , x + t.tile_size, y + t.tile_size, fill=colors[j], stipple='gray25')
+                y = self.y0 + 5 + (t.tile_size + t.tile_space)*i
+                t.update_tile_location(x, y, colors[j] + '_' + str(i) + 's')
+                t.create_canvas_tile(c)
+                self.collected[i].append(t)
             temp = col.deque(colors)
             temp.rotate(1)
             colors = list(temp)
@@ -47,6 +63,8 @@ class PlayerCard:
         for i in range(0, 5):
             for j in range(0, i+1):
                 t = Tile('grey')
-                x = self.x0 + self.card_width / 2 - (t.tile_size + t.tile_space) * j
+                x = self.x0 + self.card_width / 2 - (t.tile_size + t.tile_space) * (j+1)
                 y = self.y0 + 5 + (t.tile_size + t.tile_space) * i
-                c.create_rectangle(x, y, x + t.tile_size, y + t.tile_size, fill='gray')
+                t.update_tile_location(x, y, 'grey_' + str(j) + '_' + str(i) + 's')
+                t.create_canvas_tile(c)
+                self.gray[i].append(t)

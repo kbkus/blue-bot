@@ -32,6 +32,9 @@ class Board:
         self.create_player_cards()
         self.c.pack()
 
+        next_turn_btn = Button(r, text='Next Turn', width=10, height=1, bg='grey', command=self.next_turn())
+        next_turn_btn.place(x=50, y=800)
+
     def create_and_fill_circles(self):
         new_tile_colors = self.randomly_select_tiles()
         for i in range(0, self.num_circles):
@@ -63,6 +66,9 @@ class Board:
                 p_c = PlayerCard('P_' + str(p), 50, 450)
             p_c.create_canvas_card(self.c)
             self.player_cards.append(p_c)
+
+    def next_turn(self):
+        print('woot')
 
 
 
