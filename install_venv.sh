@@ -4,7 +4,7 @@
 set -e
 
 # Create environment
-VIRTUAL_ENVIRONMENT='venv-metal'
+VIRTUAL_ENVIRONMENT='venv-bluebot'
 python3 -m venv ${VIRTUAL_ENVIRONMENT}
 
 # Activate
