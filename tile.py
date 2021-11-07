@@ -11,7 +11,7 @@
 
 
 class Tile:
-    def __init__(self, color):
+    def __init__(self, color, is_first: bool = False):
         self.color = color
         self.tile_size = 25
         self.tile_space = 5
@@ -20,6 +20,7 @@ class Tile:
         self.x1 = self.x0 + self.tile_size
         self.y1 = self.y0 + self.tile_size
         self.board_location = ''
+        self.is_first = is_first
 
     def update_tile_location(self, x0, y0, loc):
         self.x0 = x0

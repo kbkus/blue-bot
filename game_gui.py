@@ -9,7 +9,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from tkinter import *
-from circle import Circle
+from plate import Plate
 from tile import Tile
 from player_card import PlayerCard
 import random
@@ -18,8 +18,8 @@ import random
 class Board:
     def __init__(self, r):
         self.num_players = 2
-        self.num_circles = 5 + (self.num_players - 2)*2
-        self.circles = []
+        self.num_plates = 5 + (self.num_players - 2)*2
+        self.plates = []
         self.player_cards = []
         self.tile_colors = ['yellow', 'blue', 'green', 'red', 'black']
         self.bag = ['yellow']*20 + ['blue']*20 + ['green']*20 + ['red']*20 + ['black']*20
@@ -28,31 +28,31 @@ class Board:
 
         self.c = Canvas(r, width=600, height=900, bg='saddle brown')
 
-        self.create_and_fill_circles()
+        self.create_and_fill_plates()
         self.create_player_cards()
         self.c.pack()
 
         next_turn_btn = Button(r, text='Next Turn', width=10, height=1, bg='grey', command=self.next_turn())
         next_turn_btn.place(x=50, y=800)
 
-    def create_and_fill_circles(self):
+    def create_and_fill_plates(self):
         new_tile_colors = self.randomly_select_tiles()
-        for i in range(0, self.num_circles):
-            cir = Circle('C_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125)
-            cir.create_canvas_circle(self.c)
+        for i in range(0, self.num_plates):
+            plate = Plate('C_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125)
+            plate.create_canvas_plate(self.c)
             for j in range(0, 4):
                 t = Tile(new_tile_colors.pop())
-                cir.add_tile(t)
+                plate.add_tile(t)
                 t.create_canvas_tile(self.c)
-            self.circles.append(cir)
+            self.plates.append(plate)
 
     def randomly_select_tiles(self):
         new_tiles = []
-        if len(self.bag) < 4 * self.num_circles:
+        if len(self.bag) < 4 * self.num_plates:
             self.bag += self.recycle_bag
             self.recycle_bag = []
         bag_size = len(self.bag)
-        for i in range(0, 4 * self.num_circles):
+        for i in range(0, 4 * self.num_plates):
             ind = random.randrange(bag_size)
             new_tiles.append(self.bag.pop(ind))
             bag_size -= 1
