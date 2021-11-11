@@ -12,4 +12,4 @@ packaging/LICENSE.txt
 packaging/README.md
 packaging/version.txt
 
-venv*
+venv-bluebot/*
