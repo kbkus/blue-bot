@@ -1,3 +1,4 @@
+from typing import List
 from space import Space
 
 
@@ -23,7 +24,7 @@ class Floor():
         return self._discard
 
     @discard.setter
-    def discard(self, val):
+    def discard(self, val: List):
         self._discard = val
         
     def reset(self):

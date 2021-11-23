@@ -1,5 +1,6 @@
 import random
 from typing import List
+from pprint import pprint
 
 import pandas as pd
 
@@ -13,10 +14,10 @@ class Table():
     Represents where left over tiles from plates go
     """
     
-    def __init__(self, n_plates: int = 5, players=[Player]):
+    def __init__(self, players: List[Player], n_plates: int = 5):
         self._players = players
         self.n_plates = n_plates
-        self.bag = [Tile(color) for color in COLORS for _ in range(20)]
+        self._bag = [Tile(color) for color in COLORS for _ in range(20)]
         self.plates = {
             "plate_1": {
                 "red": 0,
@@ -61,7 +62,14 @@ class Table():
                 "black": 0, 
             },
         }
-    
+    @property
+    def bag(self):
+        return self._bag
+
+    @bag.setter
+    def bag(self, updated_bag: List[Tile]):
+        self._bag = updated_bag
+
     @property
     def players(self):
         return self._players
@@ -77,11 +85,11 @@ class Table():
         for player in players:
             discard_tiles.extend(player.factory.floor.discard)
 
-    def fill_plates(self, discard_tiles: List[Tile]):
+    def fill_plates(self):
         """
         Fill plates with tiles from bag
 
-        :param discard: Player's discard piles from their floors
+        :param discard: Players' discard piles from their floors
         """
         self.empty_plates()
         n_tiles = self.n_plates * 5
@@ -89,14 +97,17 @@ class Table():
         # Check if there are enough plates in the bag
         if len(self.bag) >= n_tiles:
             self.deal_plates()
+
         # Re-fill bag with tiles from players' minus section
         else:
-            self.bag.extend(discard_tiles)
-            self.deal_plates()
-
             # Set discard piles back to being empty for each player
             for player in self.players:
+                # Add player's discard pile to list of discard_tiles
+                self.bag.extend(player.factory.floor.discard)
+                # Set player's discard back to empty
                 player.factory.floor.discard = []
+            # Deal plates
+            self.deal_plates()
         self._playable_options = self.get_playable_options()
 
     def deal_plates(self):
@@ -176,6 +187,7 @@ class Table():
 
     def game_state(self, print=False):
         """Log current game state"""
+        
         player_1 = self.players[0]
         player_2 = self.players[1]
         if print:
