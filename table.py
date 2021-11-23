@@ -187,7 +187,6 @@ class Table():
 
     def game_state(self, print=False):
         """Log current game state"""
-        
         player_1 = self.players[0]
         player_2 = self.players[1]
         if print:
