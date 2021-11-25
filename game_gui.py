@@ -8,6 +8,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 from tkinter import *
 from plate import Plate
 from tile import Tile
@@ -43,7 +44,7 @@ class Board:
             for j in range(0, 4):
                 t = Tile(new_tile_colors.pop())
                 plate.add_tile(t)
-                t.create_canvas_tile(self.c)
+                x
             self.plates.append(plate)
 
     def randomly_select_tiles(self):
@@ -69,7 +70,6 @@ class Board:
 
     def next_turn(self):
         print('woot')
-
 
 
 if __name__ == '__main__':

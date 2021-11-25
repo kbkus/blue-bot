@@ -18,6 +18,7 @@ class Plate:
         self.y0 = y0
         self.x1 = x1
         self.y1 = y1
+        self.available_colors = {"red": 0, "green": 0, "blue": 0, "yellow": 0, "black": 0}
 
     def add_tile(self, tile):
         ind = len(self.tiles)
@@ -33,6 +34,8 @@ class Plate:
         elif ind == 3:
             x = self.x0 + 40
             y = self.y0 + 40
+
+        self.available_colors[tile.color] += 1
 
         tile.update_tile_location(x, y, self.name + '_' + str(ind))
         self.tiles.append(tile)

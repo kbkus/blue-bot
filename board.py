@@ -2,12 +2,13 @@ from definitions import black, blue, green, red, yellow
 from space import Space
 
 
-class Board():
+class Board:
     """5x5 Playing board to track game progress"""
+    player_num = 0
 
     def __init__(self, name: str):
         self.game_over = False
-        self.name = name
+        self.name = f'Player_{self.player_num}'
         self.spaces = [
             [Space(yellow), Space(blue), Space(green), Space(red), Space(black)],
             [Space(black), Space(yellow), Space(blue), Space(green), Space(red)],

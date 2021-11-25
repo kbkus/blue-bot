@@ -3,65 +3,29 @@ from typing import List
 from pprint import pprint
 
 import pandas as pd
+from tkinter import *
 
 from definitions import COLORS
 from player import Player
 from tile import Tile
+from plate import Plate
 
 
-class Table():
+class Table:
     """ 
     Represents where left over tiles from plates go
     """
     
-    def __init__(self, players: List[Player], n_plates: int = 5):
+    def __init__(self, players: List[Player], root, n_plates: int = 5):
         self._players = players
         self.n_plates = n_plates
         self._bag = [Tile(color) for color in COLORS for _ in range(20)]
-        self.plates = {
-            "plate_1": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_2": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_3": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_4": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_5": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_leftover": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-        }
+        self.plates = []
+        for i in range(0, self.n_plates):
+            self.plates.append(Plate('player_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
+
+        self.c = Canvas(root, width=600, height=900, bg='saddle brown')
+
     @property
     def bag(self):
         return self._bag
@@ -88,8 +52,6 @@ class Table():
     def fill_plates(self):
         """
         Fill plates with tiles from bag
-
-        :param discard: Players' discard piles from their floors
         """
         self.empty_plates()
         n_tiles = self.n_plates * 5
@@ -113,75 +75,44 @@ class Table():
     def deal_plates(self):
         """Shuffle bag and place 4 random tiles on each plate"""
         # Shuffle tiles
-        plate_names = [name for name in self.plates if name[-1].isdigit()]
+        plate_names = [plate.name for plate in self.plates if plate.name[-1].isdigit()]
         random.shuffle(self.bag)
-        for plate in plate_names:
-            for _ in range(4):
-                tile = self.bag.pop()
-                self.plates[plate][tile.color] += 1
-
+        for plate in self.plates:
+            if plate.name[-1].isdigit():
+                plate.create_canvas_plate(self.c)
+                for i in range(4):
+                    tile = self.bag.pop()
+                    plate.add_tile(tile)
+                    tile.create_canvas_tile(self.c)
+                    self.c.pack()
 
     def empty_plates(self):
         """Reset all plates to an empty state"""
-        self.plates = {
-            "plate_1": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_2": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_3": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_4": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_5": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-            "plate_leftover": {
-                "red": 0,
-                "green": 0, 
-                "blue": 0, 
-                "yellow": 0, 
-                "black": 0, 
-            },
-        }
+        # for plate in self.plates:
+        #     del plate
+        self.plates = []
+        for i in range(0, self.n_plates):
+            self.plates.append(Plate('player_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
+
         self._playable_options = self.get_playable_options()
 
     @property
     def playable_options(self):
         return self._playable_options
 
+    def get_plates_dict(self):
+        plates_dict = {plate.name: plate.available_colors for plate in self.plates}
+        return plates_dict
+
     def get_playable_options(self):
         """Convert self.rows to a pandas dataframe of all playable options"""
-        options_df = pd.DataFrame(self.plates)
+        options_df = pd.DataFrame(self.get_plates_dict())
         options_df = options_df.reset_index()
         options_df = pd.melt(
             options_df, 
             id_vars=["index"], 
             value_vars=[x for x in options_df if x.startswith("plate")]
-            ).rename(columns={"index": "color", "value":"playable_tiles"})
+            ).rename(columns={"index": "color", "value": "playable_tiles"})
         self._playable_options = options_df
         return self._playable_options
 
