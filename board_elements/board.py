@@ -1,5 +1,5 @@
 from definitions import black, blue, green, red, yellow
-from space import Space
+from board_elements.space import Space
 
 
 class Board:

@@ -10,9 +10,9 @@
 # SOFTWARE.
 
 from tkinter import *
-from plate import Plate
-from tile import Tile
-from player_card import PlayerCard
+from board_elements.plate import Plate
+from board_elements.tile import Tile
+from board_elements.player_card import PlayerCard
 import random
 
 
@@ -44,7 +44,6 @@ class Board:
             for j in range(0, 4):
                 t = Tile(new_tile_colors.pop())
                 plate.add_tile(t)
-                x
             self.plates.append(plate)
 
     def randomly_select_tiles(self):

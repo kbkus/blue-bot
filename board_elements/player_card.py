@@ -12,7 +12,7 @@
 import collections as col
 import tkinter
 
-from tile import Tile
+from board_elements.tile import Tile
 
 
 class PlayerCard:

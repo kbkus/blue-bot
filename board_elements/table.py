@@ -6,9 +6,9 @@ import pandas as pd
 from tkinter import *
 
 from definitions import COLORS
-from player import Player
-from tile import Tile
-from plate import Plate
+from board_elements.player import Player
+from board_elements.tile import Tile
+from board_elements.plate import Plate
 
 
 class Table:
@@ -16,15 +16,17 @@ class Table:
     Represents where left over tiles from plates go
     """
     
-    def __init__(self, players: List[Player], root, n_plates: int = 5):
+    def __init__(self, players: List[Player], root = None, n_plates: int = 5):
         self._players = players
         self.n_plates = n_plates
         self._bag = [Tile(color) for color in COLORS for _ in range(20)]
         self.plates = []
         for i in range(0, self.n_plates):
-            self.plates.append(Plate('player_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
-
-        self.c = Canvas(root, width=600, height=900, bg='saddle brown')
+            self.plates.append(Plate('plate_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
+        self.c = None
+        if root:
+            self.c = Canvas(root, width=600, height=900, bg='saddle brown')
+            
 
     @property
     def bag(self):
@@ -75,16 +77,22 @@ class Table:
     def deal_plates(self):
         """Shuffle bag and place 4 random tiles on each plate"""
         # Shuffle tiles
+        # Get list of string plate names. Plate names end in a digit
         plate_names = [plate.name for plate in self.plates if plate.name[-1].isdigit()]
         random.shuffle(self.bag)
         for plate in self.plates:
             if plate.name[-1].isdigit():
-                plate.create_canvas_plate(self.c)
+                # If a canvas has been created, add plate to GUI
+                if self.c:
+                    plate.create_canvas_plate(self.c)
+
+                # Add tiles in range to each plate
                 for i in range(4):
                     tile = self.bag.pop()
                     plate.add_tile(tile)
-                    tile.create_canvas_tile(self.c)
-                    self.c.pack()
+                    if self.c:
+                        tile.create_canvas_tile(self.c)
+                        self.c.pack()
 
     def empty_plates(self):
         """Reset all plates to an empty state"""
@@ -92,7 +100,7 @@ class Table:
         #     del plate
         self.plates = []
         for i in range(0, self.n_plates):
-            self.plates.append(Plate('player_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
+            self.plates.append(Plate('plate_' + str(i), 50 + (i * 100), 50, 125 + (i * 100), 125))
 
         self._playable_options = self.get_playable_options()
 

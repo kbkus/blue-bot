@@ -1,4 +1,6 @@
-#!/Users/aklausner/Documents/Random/01_BlueBot/blue-bot/venv-bluebot/bin/python3
+#!/bin/sh
+'''exec' "/Users/kacikus/Dropbox/Python Projects/blue-bot/venv-bluebot/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

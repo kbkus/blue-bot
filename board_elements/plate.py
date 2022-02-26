@@ -10,8 +10,23 @@
 # SOFTWARE.
 
 
+from tkinter import Canvas
+
+from board_elements.tile import Tile
+
+
 class Plate:
-    def __init__(self, name, x0, y0, x1, y1):
+    def __init__(self, name: str, x0: float, y0: float, x1: float, y1:float ) -> None:
+        """AI is creating summary for __init__
+
+        Args:
+            name (str): Name of plate instance
+            x0 (float): Top left corner of plate
+            y0 (float): Top left corner of plate
+            x1 (float): Bottom right corner of plate
+            y1 (float): Bottom right corner of plate
+        """
+
         self.name = name
         self.tiles = []
         self.x0 = x0
@@ -20,7 +35,12 @@ class Plate:
         self.y1 = y1
         self.available_colors = {"red": 0, "green": 0, "blue": 0, "yellow": 0, "black": 0}
 
-    def add_tile(self, tile):
+    def add_tile(self, tile: Tile):
+        """AI is creating summary for add_tile
+
+        Args:
+            tile (Tile): [description]
+        """
         ind = len(self.tiles)
         if ind == 0:
             x = self.x0 + 10
@@ -40,5 +60,5 @@ class Plate:
         tile.update_tile_location(x, y, self.name + '_' + str(ind))
         self.tiles.append(tile)
 
-    def create_canvas_plate(self, c):
+    def create_canvas_plate(self, c: Canvas):
         c.create_oval(self.x0, self.y0, self.x1, self.y1, fill='gray')

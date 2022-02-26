@@ -1,5 +1,5 @@
-from board import Board
-from factory import Factory
+from board_elements.board import Board
+from board_elements.factory import Factory
 
 
 class Player():

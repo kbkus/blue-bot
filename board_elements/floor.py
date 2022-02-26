@@ -1,5 +1,5 @@
 from typing import List
-from space import Space
+from board_elements.space import Space
 
 
 class Floor():

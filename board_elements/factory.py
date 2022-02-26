@@ -1,6 +1,6 @@
 import pandas as pd
 
-from floor import Floor
+from board_elements.floor import Floor
 
 
 class Factory():
