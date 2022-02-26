@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+ls #!/usr/bin/env bash
 # Run this script to install the virtual environment for this project.
 
 set -e
 
 # Create environment
 VIRTUAL_ENVIRONMENT='venv-bluebot'
-python3 -m venv ${VIRTUAL_ENVIRONMENT}
+# python3 -m venv ${VIRTUAL_ENVIRONMENT}
+/usr/bin/python3 -m venv ${VIRTUAL_ENVIRONMENT}
 
 # Activate
 . ${VIRTUAL_ENVIRONMENT}/bin/activate
